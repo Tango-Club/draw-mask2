@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>无面人面具绘制游戏</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- 左侧：无面人展示区 -->
+        <div class="character-area">
+            <div class="speech-bubble" id="speech-bubble"></div>
+            <div class="faceless-character" id="faceless-character">
+                <div class="character-body">
+                    <div class="character-head">
+                        <div class="eye eye-left"></div>
+                        <div class="eye eye-right"></div>
+                        <div class="character-mouth"></div>
+                    </div>
+                    <div class="character-mask" id="character-mask"></div>
+                    <div class="character-arms">
+                        <div class="arm arm-left"></div>
+                        <div class="arm arm-right"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 中间：面具绘制区 -->
+        <div class="drawing-area">
+            <div class="canvas-container">
+                <canvas id="mask-canvas" width="400" height="400"></canvas>
+            </div>
+            <div class="score-display" id="score-display"></div>
+        </div>
+
+        <!-- 底部：控制按钮区 -->
+        <div class="controls-area">
+            <button id="start-game" class="btn btn-primary">开始游戏</button>
+            <button id="submit-drawing" class="btn btn-success" style="display: none;">提交作品</button>
+            <button id="restart-game" class="btn btn-secondary" style="display: none;">再玩一次</button>
+
+            <div class="drawing-tools" id="drawing-tools" style="display: none;">
+                <div class="color-palette">
+                    <div class="color-btn" data-color="#000000" style="background-color: #000000;"></div>
+                    <div class="color-btn" data-color="#FF6B6B" style="background-color: #FF6B6B;"></div>
+                    <div class="color-btn" data-color="#4ECDC4" style="background-color: #4ECDC4;"></div>
+                    <div class="color-btn" data-color="#FFE66D" style="background-color: #FFE66D;"></div>
+                    <div class="color-btn" data-color="#95E1D3" style="background-color: #95E1D3;"></div>
+                    <div class="color-btn" data-color="#F38181" style="background-color: #F38181;"></div>
+                    <div class="color-btn" data-color="#AA96DA" style="background-color: #AA96DA;"></div>
+                    <div class="color-btn" data-color="#FCBAD3" style="background-color: #FCBAD3;"></div>
+                </div>
+                <div class="brush-size">
+                    <label>画笔大小：</label>
+                    <input type="range" id="brush-size" min="1" max="20" value="3">
+                </div>
+                <div class="tool-buttons">
+                    <button id="eraser-btn" class="btn btn-tool">橡皮擦</button>
+                    <button id="clear-btn" class="btn btn-tool">清空画布</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载模块 -->
+    <script src="modules/i18n.js"></script>
+    <script src="modules/canvas.js"></script>
+    <script src="modules/character.js"></script>
+    <script src="modules/ai.js"></script>
+    <script src="modules/scoring.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
