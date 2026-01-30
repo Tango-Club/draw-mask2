@@ -1,4 +1,14 @@
+---
+title: Faceless Mask Drawing Game
+emoji: 🎭
+colorFrom: indigo
+colorTo: purple
+sdk: docker
+pinned: false
+---
+
 # 无面人面具绘制游戏
+
 
 一个简单的网页游戏，用户为无面人绘制面具，角色给出情绪提示，用户在画布上绘制，AI（NVIDIA Vision API）或备用算法评分。
 
