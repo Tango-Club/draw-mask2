@@ -63,7 +63,7 @@ async function submitDrawing() {
         const aiResult = await AIModule.scoreDrawing(imageData, currentDemand, currentLang);
         
         // 显示结果
-        CharacterModule.showFeedback(aiResult.score, aiResult.feedback);
+        CharacterModule.showFeedback(aiResult.score, aiResult.feedback, imageData);
         
         // 切换按钮
         submitBtn.style.display = 'none';

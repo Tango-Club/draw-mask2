@@ -28,7 +28,10 @@ const CharacterModule = {
         this.updateSpeech(t('analyzing'));
     },
     
-    showMask() {
+    showMask(imageData) {
+        if (imageData) {
+            this.characterMask.style.backgroundImage = `url(${imageData})`;
+        }
         this.characterMask.style.opacity = '1';
     },
     
@@ -70,7 +73,7 @@ const CharacterModule = {
     },
     
     // 根据分数显示反馈
-    showFeedback(score, feedback) {
+    showFeedback(score, feedback, imageData) {
         this.hideMask();
         
         // 显示评分
@@ -82,10 +85,10 @@ const CharacterModule = {
         
         // 根据分数播放动画
         if (score >= 80) {
-            this.showMask();
+            this.showMask(imageData);
             this.dance();
         } else if (score >= 60) {
-            this.showMask();
+            this.showMask(imageData);
             this.nod();
         } else {
             this.shake();
