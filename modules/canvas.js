@@ -25,12 +25,12 @@ const CanvasModule = {
     },
     
     drawMaskTemplate() {
-        // 清空画布
-        this.ctx.fillStyle = 'white';
+        // 清空画布，使用与无面人头部一致的颜色 #f0e6d3
+        this.ctx.fillStyle = '#f0e6d3';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
         // 绘制面具轮廓（虚线）
-        this.ctx.strokeStyle = '#e0e0e0';
+        this.ctx.strokeStyle = '#d4c4a8';
         this.ctx.lineWidth = 2;
         this.ctx.setLineDash([10, 10]);
         this.ctx.beginPath();
@@ -130,7 +130,7 @@ const CanvasModule = {
         // 画一个点
         this.ctx.beginPath();
         this.ctx.arc(coords.x, coords.y, this.brushSize / 2, 0, Math.PI * 2);
-        this.ctx.fillStyle = this.isEraser ? 'white' : this.currentColor;
+        this.ctx.fillStyle = this.isEraser ? '#f0e6d3' : this.currentColor;
         this.ctx.fill();
     },
     
@@ -142,7 +142,7 @@ const CanvasModule = {
         this.ctx.beginPath();
         this.ctx.moveTo(this.lastX, this.lastY);
         this.ctx.lineTo(coords.x, coords.y);
-        this.ctx.strokeStyle = this.isEraser ? 'white' : this.currentColor;
+        this.ctx.strokeStyle = this.isEraser ? '#f0e6d3' : this.currentColor;
         this.ctx.lineWidth = this.brushSize;
         this.ctx.stroke();
         
@@ -176,10 +176,18 @@ const CanvasModule = {
         const imageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
         const pixels = imageData.data;
         
-        // 检查是否所有像素都是白色（背景色）
+        // 背景色为 #f0e6d3 (240, 230, 211)
         for (let i = 0; i < pixels.length; i += 4) {
-            if (pixels[i] < 250 || pixels[i + 1] < 250 || pixels[i + 2] < 250) {
-                return false;
+            const r = pixels[i];
+            const g = pixels[i + 1];
+            const b = pixels[i + 2];
+            
+            // 如果像素颜色与背景色有显著差异（考虑到虚线辅助线颜色为 #d4c4a8 (212, 196, 168)）
+            if (Math.abs(r - 240) > 30 || Math.abs(g - 230) > 30 || Math.abs(b - 211) > 30) {
+                // 排除辅助线的干扰
+                if (Math.abs(r - 212) > 10 || Math.abs(g - 196) > 10 || Math.abs(b - 168) > 10) {
+                    return false;
+                }
             }
         }
         return true;
