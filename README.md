@@ -9,8 +9,11 @@ pinned: false
 
 # 无面人面具绘制游戏
 
-
 一个简单的网页游戏。用户为一个孤独、神秘的“无面人”绘制表达特定情绪的面具。AI（NVIDIA Vision API）将扮演无面人，根据情绪契合度给出感性的评分与评语。
+
+## live demo
+https://huggingface.co/spaces/bitetheddddt/draw-mask2
+
 
 ## 🌟 核心特色
 
