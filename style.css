@@ -194,6 +194,7 @@ body {
     opacity: 0;
     transition: opacity 0.3s;
     z-index: 10;
+    overflow: hidden; /* 确保内容不溢出 */
 }
 
 .character-arms {
@@ -287,11 +288,26 @@ body {
     overflow: hidden;
     background: white;
     box-shadow: var(--shadow);
+    position: relative;
+    width: 400px;
+    height: 400px;
 }
 
 #mask-canvas {
     display: block;
     cursor: crosshair;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+#template-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 2;
 }
 
 .score-display {

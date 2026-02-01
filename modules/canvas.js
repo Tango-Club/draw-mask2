@@ -8,9 +8,14 @@ const CanvasModule = {
     lastX: 0,
     lastY: 0,
     
+    templateCanvas: null,
+    templateCtx: null,
+    
     init() {
         this.canvas = document.getElementById('mask-canvas');
         this.ctx = this.canvas.getContext('2d');
+        this.templateCanvas = document.getElementById('template-canvas');
+        this.templateCtx = this.templateCanvas.getContext('2d');
         
         // 设置初始样式
         this.ctx.lineCap = 'round';
@@ -25,34 +30,37 @@ const CanvasModule = {
     },
     
     drawMaskTemplate() {
-        // 清空画布，使用与无面人头部一致的颜色 #f0e6d3
+        // 清空主画布（背景色）
         this.ctx.fillStyle = '#f0e6d3';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
-        // 绘制面具轮廓（虚线）
-        this.ctx.strokeStyle = '#d4c4a8';
-        this.ctx.lineWidth = 2;
-        this.ctx.setLineDash([10, 10]);
-        this.ctx.beginPath();
-        this.ctx.ellipse(200, 180, 140, 160, 0, 0, Math.PI * 2);
-        this.ctx.stroke();
+        // 清空模板画布
+        this.templateCtx.clearRect(0, 0, this.templateCanvas.width, this.templateCanvas.height);
         
-        // 绘制眼睛位置提示
-        this.ctx.setLineDash([5, 5]);
-        this.ctx.beginPath();
-        this.ctx.arc(150, 160, 30, 0, Math.PI * 2);
-        this.ctx.stroke();
-        this.ctx.beginPath();
-        this.ctx.arc(250, 160, 30, 0, Math.PI * 2);
-        this.ctx.stroke();
+        // 绘制面具轮廓（虚线）到模板画布
+        this.templateCtx.strokeStyle = '#d4c4a8';
+        this.templateCtx.lineWidth = 2;
+        this.templateCtx.setLineDash([10, 10]);
+        this.templateCtx.beginPath();
+        this.templateCtx.ellipse(200, 180, 140, 160, 0, 0, Math.PI * 2);
+        this.templateCtx.stroke();
         
-        // 绘制嘴巴位置提示
-        this.ctx.beginPath();
-        this.ctx.arc(200, 260, 40, 0, Math.PI, false);
-        this.ctx.stroke();
+        // 绘制眼睛位置提示到模板画布
+        this.templateCtx.setLineDash([5, 5]);
+        this.templateCtx.beginPath();
+        this.templateCtx.arc(150, 160, 30, 0, Math.PI * 2);
+        this.templateCtx.stroke();
+        this.templateCtx.beginPath();
+        this.templateCtx.arc(250, 160, 30, 0, Math.PI * 2);
+        this.templateCtx.stroke();
+        
+        // 绘制嘴巴位置提示到模板画布
+        this.templateCtx.beginPath();
+        this.templateCtx.arc(200, 260, 40, 0, Math.PI, false);
+        this.templateCtx.stroke();
         
         // 重置样式
-        this.ctx.setLineDash([]);
+        this.templateCtx.setLineDash([]);
     },
     
     bindEvents() {
@@ -169,7 +177,24 @@ const CanvasModule = {
     },
     
     getImageData() {
-        return this.canvas.toDataURL('image/png');
+        // 创建一个临时画布用于裁切
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = 400;
+        tempCanvas.height = 400;
+        const tCtx = tempCanvas.getContext('2d');
+
+        // 1. 在临时画布上绘制一个椭圆路径（与模板一致）
+        tCtx.beginPath();
+        tCtx.ellipse(200, 180, 140, 160, 0, 0, Math.PI * 2);
+        
+        // 2. 开启裁切
+        tCtx.clip();
+
+        // 3. 将原画布内容画到临时画布上（只有椭圆内会被留下，其余透明）
+        tCtx.drawImage(this.canvas, 0, 0);
+
+        // 4. 返回这个已经“抠好图”的 base64
+        return tempCanvas.toDataURL('image/png');
     },
     
     isCanvasEmpty() {
@@ -182,12 +207,9 @@ const CanvasModule = {
             const g = pixels[i + 1];
             const b = pixels[i + 2];
             
-            // 如果像素颜色与背景色有显著差异（考虑到虚线辅助线颜色为 #d4c4a8 (212, 196, 168)）
-            if (Math.abs(r - 240) > 30 || Math.abs(g - 230) > 30 || Math.abs(b - 211) > 30) {
-                // 排除辅助线的干扰
-                if (Math.abs(r - 212) > 10 || Math.abs(g - 196) > 10 || Math.abs(b - 168) > 10) {
-                    return false;
-                }
+            // 如果像素颜色与背景色有显著差异
+            if (Math.abs(r - 240) > 10 || Math.abs(g - 230) > 10 || Math.abs(b - 211) > 10) {
+                return false;
             }
         }
         return true;

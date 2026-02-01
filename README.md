@@ -10,23 +10,22 @@ pinned: false
 # 无面人面具绘制游戏
 
 
-一个简单的网页游戏，用户为无面人绘制面具，角色给出情绪提示，用户在画布上绘制，AI（NVIDIA Vision API）或备用算法评分。
+一个简单的网页游戏。用户为一个孤独、神秘的“无面人”绘制表达特定情绪的面具。AI（NVIDIA Vision API）将扮演无面人，根据情绪契合度给出感性的评分与评语。
 
-## 功能特点
+## 🌟 核心特色
 
-- 🎨 HTML5 Canvas 绘图功能
-- 🎭 可爱的简笔画风格无面人角色
-- 🤖 NVIDIA Vision API AI 评分
-- 🎮 流畅的游戏流程
-- 📱 支持移动端触摸操作
-- 🌐 支持中英文双语
+- **感性 AI 评价**：集成 NVIDIA Vision API (Llama 3.2 Vision)，AI 以“无面人”的神秘口吻给出沉浸式评价。
+- **动态面具佩戴**：玩家提交作品后，面具会通过 Canvas 实时裁切并完美贴合在角色脸上。
+- **纯粹视觉体验**：无面人初始状态完全空白，所有的表情与灵魂都由玩家的画笔赋予。
+- **丝滑绘图系统**：支持多色选择、笔触调节、橡皮擦，并具备移动端触摸优化。
+- **双层画布架构**：绘图层与模板提示层分离，确保导出的面具图片不包含辅助虚线。
 
-## 技术栈
+## 🛠 技术栈
 
-- 前端：纯 HTML5 + CSS3 + JavaScript (ES6+)
-- 后端：Node.js + Express.js
-- API：NVIDIA Vision API (meta/llama-3.2-90b-vision-instruct)
-- 无需构建步骤，直接在浏览器中加载
+- **前端**：Vanilla JavaScript (ES6+), CSS3 (Flexbox/Grid/Animations), HTML5 Canvas
+- **后端**：Node.js + Express.js
+- **模型**：[meta/llama-3.2-90b-vision-instruct](https://build.nvidia.com/meta/llama-3_2-90b-vision-instruct)
+- **部署**：支持 Docker, Vercel, Hugging Face Spaces
 
 ## 快速开始
 

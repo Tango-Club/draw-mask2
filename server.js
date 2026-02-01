@@ -52,8 +52,20 @@ app.post('/api/vision-score', async (req, res) => {
     
     try {
         const prompt = lang === 'zh' 
-            ? `请评估这张面具图表达"${emotion}"情绪的程度。请给出一个0-100的分数，以及简短的评语（不超过20字）。请以JSON格式返回，格式：{"score": 分数, "feedback": "评语"}`
-            : `Please evaluate how well this mask expresses the "${emotion}" emotion. Give a score from 0-100 and a brief comment (within 20 words). Return in JSON format: {"score": score, "feedback": "comment"}`;
+            ? `你是一个神秘、温柔但略显孤独的“无面人”。玩家为你画了一张表达“${emotion}”情绪的面具。请评估这张面具，给出一个0-100的分数，并以无面人的口吻写一段简短的评语（不超过25字）。
+               评语要求：
+               1. 语气要符合神秘、优雅、略带忧郁的性格。
+               2. 如果分数高（80+），表现出对自己终于拥有了表情的深深感激。
+               3. 如果分数中等（60-79），表现出对面具的喜爱。
+               4. 如果分数低（<60），表现出一种“虽然不太懂，但还是谢谢你”的委婉和困惑。
+               请严格以JSON格式返回，格式：{"score": 分数, "feedback": "评语"}`
+            : `You are a mysterious, gentle, and slightly lonely "Faceless Man". A player has drawn a mask for you that expresses "${emotion}". Evaluate the mask, give a score from 0-100, and write a short comment (within 25 words) in the persona of the Faceless Man.
+               Requirements:
+               1. The tone should be mysterious, elegant, and slightly melancholic.
+               2. High score (80+): Show deep gratitude for finally having an expression.
+               3. Medium score (60-79): Show appreciation for the gift.
+               4. Low score (<60): Show a sense of "I don't quite understand, but thank you anyway" confusion.
+               Return strictly in JSON format: {"score": score, "feedback": "comment"}`;
         
         const response = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
             method: 'POST',
